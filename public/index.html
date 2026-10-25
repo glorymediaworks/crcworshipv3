@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sign in · CRC Worship</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Noto+Sans+Tamil:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css">
+</head><body>
+<main class="auth">
+  <div class="orb a"></div><div class="orb b"></div>
+  <form class="card" id="f" autocomplete="on">
+    <div class="brand"><div class="mark">CRC</div><h1>CRC Worship</h1><p>Sign in to plan this week’s service</p></div>
+    <div class="field"><label for="u">Username</label><input class="input" id="u" autocomplete="username" required autofocus></div>
+    <div class="field"><label for="p">Password</label><input class="input" id="p" type="password" autocomplete="current-password" required></div>
+    <div class="err-msg" id="e" role="alert"></div>
+    <button class="btn pri" style="width:100%;padding:12px" id="b">Sign in</button>
+  </form>
+</main>
+<script src="js/config.js"></script><script src="js/core.js"></script>
+<script>
+if (CRC.getToken()) CRC.api('/api/sessions?month=' + CRC.dateKey(new Date()).slice(0, 7), { noRedirect: true })
+  .then(() => location.replace('calendar.html')).catch(() => localStorage.removeItem('crc_token'));
+f.addEventListener('submit', async (ev) => {
+  ev.preventDefault(); e.textContent = ''; b.disabled = true; b.textContent = 'Signing in…';
+  try {
+    const r = await CRC.api('/api/login', { method: 'POST', body: { username: u.value.trim(), password: p.value }, noRedirect: true });
+    CRC.setToken(r.token); location.href = 'calendar.html';
+  } catch (x) { e.textContent = x.message; p.value = ''; p.focus(); b.disabled = false; b.textContent = 'Sign in'; }
+});
+</script></body></html>

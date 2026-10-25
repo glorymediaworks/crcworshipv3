@@ -1,0 +1,12 @@
+{
+  "name": "crcworshipv3",
+  "version": "3.0.0",
+  "private": true,
+  "description": "CRC Worship v3 - date-wise worship sessions (Vercel + MongoDB)",
+  "scripts": {
+    "dev": "vercel dev",
+    "test": "node tests/run.js"
+  },
+  "engines": { "node": ">=18" },
+  "dependencies": { "mongodb": "^6.8.0" }
+}
